@@ -21,7 +21,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+      # Build Docker Image
       - name: Step 4 - Build Docker Image
         uses: docker/build-push-action@v5
         with:

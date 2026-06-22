@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Step 1 - Checkout Code
         uses: actions/checkout@v4
-
+      # Deploy Hook Trigger
       - name: Step 3 - Deploy Hook Trigger via Curl
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_PROD_URL }}
