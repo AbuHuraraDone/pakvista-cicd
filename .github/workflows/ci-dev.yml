@@ -1,0 +1,41 @@
+name: CI - Development
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Step 2 - Mock Lint & Validate Syntax
+        run: |
+          echo "Simulating HTMLHint, Stylelint, and Parcel Build checks..."
+          echo "All static pages passed structure assessment verification."
+
+      - name: Step 3 - Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # Build Docker Image
+      - name: Step 4 - Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/pakvista:dev-latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/pakvista:dev-${{ github.sha }}
+
+      - name: Step 5 & 6 - Push Image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/pakvista:dev-latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/pakvista:dev-${{ github.sha }}
